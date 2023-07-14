@@ -1,0 +1,13 @@
+class Person {
+  def Person(str name) {
+    this.name = name;
+  }
+
+  def sayHello() {
+    console.log();
+  }
+}
+
+john = Person;
+john.sayHello();
+john.study();

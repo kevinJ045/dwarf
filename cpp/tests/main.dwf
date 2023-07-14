@@ -1,0 +1,257 @@
+
+// normal import, imports globally 
+import GUI
+
+// import related stuff
+import (GUI, JSX)
+
+// import specific exports
+import GUI : { Button }
+
+// import specific exports from each import
+import (GUI, JSX) : [{ Button }, *]
+
+// change import name, will make all distributed classes to one class
+// for example, instead of Button, you have to do GUILIB.Button
+import GUI as GUILIB
+
+// import specific export and change name
+import GUI : { Button as Btn }
+
+// previous but with multi import
+import (GUI, JSX) as [GUILIB, JSXLIB]
+
+// use this class only on types of Widget, for example Widget itself or things that inherit it. and asserts dominant information into it
+import GUI 
+  as Main
+  useFor classType Widget
+  assert {
+    version: 1.7
+  }
+
+// Note: assertion means changing the default options of imports, for example you can import a file as a JSON instead of a compilable code
+
+// Multiple import assertions, use all instead of [] to define a property to all imports
+import (GUI, 3D)
+  as all MainLibs
+  useFor name Main
+  assert all {
+     version: 1.7
+  }
+  
+// import file
+import f:somefile
+
+// import installed package, for example in pkgs folder or DWARFPATH/pkgs folder
+import pkg:somepkg
+
+// folder import
+import f:anotherfolder.somefile
+  as someotherfile
+  
+// start with . to determine this folder
+import f:.thisfolder.somefile
+
+// start with .. to determine parent
+import f:..parent.somefile
+
+// use fstr for string implifications
+imoort fstr:"folder/somefile.dwf"
+
+// use assert to import a text file
+import fstr:'folder/p.txt' as txt assert {stringify: true}
+
+// this is a import set, you can make a set of imports and import them all with one line
+
+import <LIB>
+import <LIB,AnotherList>
+
+// import single package from import list
+import <LIB> 
+  : {GUI}
+  as libs
+
+// import set define with options
+import set packages (GUI, MATLIB, 3D)
+  opt [
+    as somename
+      useFor classType Some,
+    as mat
+      useFor type String
+  ] all opt [
+    assert {
+      version: 1.7
+    }
+  ]
+
+import <packages>
+
+// import super, allows you to use whatever the imported package uses. for example if they @use GUI, it will be used too, and if you use tag imports, all imported modules there will be reimported here
+import f:usecases
+  super (uses, import)
+  
+import ImportControl
+
+// use command
+@use GUI.StateMan;
+@use JSX.jsx;
+@use GUI !; // ! means important 
+
+
+#/
+Alright, so here,
+type writes an output to the console directly, but the catch is that, it doesn't necessarily write in a new line, it just writes it.
+dump is a funnyFunction, yes thats a thing in dwarf. it dumps all functions and all properties of a class and ignores circular parts. i know, cool.
+global is a global variable, it is the values of the main scope, ofc you can swith that too.
+#/
+type dump global;
+
+//classes
+class Mood {
+  current = "sad";
+  previous = "";
+  
+  Mood({
+    this.previous,
+    required this.current
+  });
+  
+  //Set Getter,
+  :get(){
+    return current;
+  }
+  // Set Setter
+  :set(str val){
+    previous = current;
+    current = val;
+  }
+}
+
+State<str> name = "Andy";
+State<int> age = 5;
+State<dbl> money = 6.1;
+let mood = State<Mood>(Mood("happy"));
+
+class Main extends Frame {
+  
+  Main(): super(SELF, "Frame Title");
+  
+  // You can bind the constructor class
+  :Main(){
+    str response = "";
+    do wait
+      response = sendHttp()
+    then
+    // do anything
+    
+    
+    
+    dont wait 
+      response = sendHttp()
+    then {
+      // anything after response
+    }
+    // anything before response
+  }
+  
+  
+}
+
+final int main(list<str> args){
+  frame = Main();
+  frame.on("exit", () {
+    x.exit();
+  });
+}
+
+// funnyFunctions
+arr nums = (1,2,3);
+
+push 3 nums;
+nums.push(3);
+push 4 nums.four;
+nums.four = 4;
+push 0 5 nums;
+nums.shift(5)
+push -1 6 nums;
+nums.push(6);
+push 3 7 nums;
+nums[3] = 7;
+
+list lst = [
+  str(),
+  Button("hhh"),
+  SomeOtherClass(),
+  1,
+  2
+];
+
+log(lst); // normal log
+
+pull int lst; // will pull all ints in lst
+pull 0 int lst; // will pull the first int
+pull -1 int lst; // pulls the -1 value of lst
+pull 5 lst; // pulls the 5th of lst, lst[4]
+
+pop SomeOtherClass lst; // removes all SomeOtherClass
+pop 0 Button lst; // removes first Button
+
+index SomeOtherClass lst; gives index of the first SomeOtherClass or null if not found
+index -1 SomeOtherClass lst; gives last index of SomeOtherClass.
+
+// Note: Funny Functions mostly also exist in arrays and objects(or everything). so you dont have to use the command based ones.
+
+class versionControl extends ImportControl{
+  int version = 3;
+  
+  Any setter(newValue){
+    version = newValue;
+  }
+  
+  Any provide(imports){
+    if(version < 3){
+      pop imports.Main;
+      return imports;
+    } else {
+      return imports;
+    }
+  }
+  
+}
+
+fun main(){
+  return "s"
+}
+
+int main(){
+  return 1;
+}
+
+typedef g {
+  one: 1,
+  two: 2
+}
+
+class g extends TypeClass {
+  
+  @override
+  :operations.add (value){
+    this += 12
+  }
+
+}
+
+g f = one; // 1
+
+f + 4; //
+
+// if you use this, dont use final in main
+export default main;
+
+export { Main }
+export { Main as MainFrame }
+export { Main } assert {
+  version: versionControl
+}
+export default Main assert {...}
+
